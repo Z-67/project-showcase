@@ -1,0 +1,31 @@
+main {
+    text-align: center;
+    padding: 80px 20px;
+    background-color: #f1f3f5;
+    color: #212529;
+}
+
+h1 {
+    font-size: 3rem;
+    font-weight: 700;
+    margin-bottom: 30px;
+    color: #0d6efd;
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+p {
+    font-size: 1.5rem;
+    color: #6c757d;
+    margin-bottom: 40px;
+    max-width: 800px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+footer {
+    margin-top: 60px;
+    padding: 20px 0;
+    background-color: #212529;
+    color: #ffffff;
+    text-align: center;
+}
