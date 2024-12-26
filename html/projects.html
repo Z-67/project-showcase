@@ -15,22 +15,27 @@
       <a href="index.html" class="text-white text-decoration-none fw-bold">Home</a>
       <a href="projects.html" class="text-white text-decoration-none fw-bold">Projects</a>
       <a href="contact.html" class="text-white text-decoration-none fw-bold">Contact</a>
+      <a href="admin.html" class="text-white text-decoration-none fw-bold">Admin</a>
     </nav>
   </header>
 
   <main class="container py-5">
     <h1 class="text-primary fw-bold mb-4">Explore Projects</h1>
+    
+    <!-- Admin Controls -->
     <div id="adminControls" class="mb-4" style="display: none;">
-      <button id="clearProjectsBtn" class="btn btn-danger">Clear All Projects</button>
+        <button id="clearProjectsBtn" class="btn btn-danger">Clear All Projects</button>
+        <button id="logoutBtn" class="btn btn-secondary">Logout</button>
     </div>
+
+    <!-- Projects Container -->
     <div class="row g-4" id="projectsContainer"></div>
   </main>
 
   <script>
-    // Check if the user is an admin
-    const isAdmin = prompt("Enter admin password (or leave blank to view as user):") === "admin123";
+    // Check admin status from localStorage
+    const isAdmin = localStorage.getItem("isAdmin") === "true";
     const adminControls = document.getElementById("adminControls");
-    const projectsContainer = document.getElementById("projectsContainer");
 
     // Show admin controls if authenticated
     if (isAdmin) {
@@ -39,8 +44,9 @@
 
     // Fetch projects from localStorage
     const projects = JSON.parse(localStorage.getItem("projects")) || [];
+    const projectsContainer = document.getElementById("projectsContainer");
 
-    // Render projects
+    // Render projects dynamically
     projects.forEach((project, index) => {
       const projectCard = document.createElement("div");
       projectCard.className = "col-md-4";
@@ -53,14 +59,18 @@
             ${project.projectAudio ? `<p><strong>Audio:</strong> ${project.projectAudio}</p>` : ""}
             ${project.projectDocument ? `<p><strong>Document:</strong> ${project.projectDocument}</p>` : ""}
             ${project.projectVideo ? `<p><strong>Video:</strong> ${project.projectVideo}</p>` : ""}
-            ${isAdmin ? `<button class="btn btn-danger" onclick="removeProject(${index})">Remove</button>` : ""}
+            ${
+              isAdmin
+                ? `<button class="btn btn-danger mt-2" onclick="removeProject(${index})">Remove</button>`
+                : ""
+            }
           </div>
         </div>
       `;
       projectsContainer.appendChild(projectCard);
     });
 
-    // Function to remove a project (admin-only)
+    // Admin-only project removal
     function removeProject(index) {
       if (!isAdmin) return;
       if (confirm("Are you sure you want to remove this project?")) {
@@ -73,12 +83,18 @@
 
     // Clear all projects (admin-only)
     document.getElementById("clearProjectsBtn").addEventListener("click", () => {
-      if (!isAdmin) return;
       if (confirm("Are you sure you want to clear all projects?")) {
         localStorage.removeItem("projects");
         alert("All projects removed successfully.");
         window.location.reload();
       }
+    });
+
+    // Logout action
+    document.getElementById("logoutBtn").addEventListener("click", () => {
+      localStorage.removeItem("isAdmin");
+      alert("Logged out successfully.");
+      window.location.href = "index.html";
     });
   </script>
 </body>
